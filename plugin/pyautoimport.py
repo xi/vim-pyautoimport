@@ -2,20 +2,21 @@ import sys
 import subprocess
 from collections import Counter
 
-from pyflakes.api import checkPath
-from pyflakes.messages import UndefinedName
-
 
 class Reporter:
     def __init__(self):
         self.names = set()
 
     def flake(self, msg):
+        from pyflakes.messages import UndefinedName
+
         if isinstance(msg, UndefinedName):
             self.names.add(msg.message_args[0])
 
 
 def get_undefined_names(path):
+    from pyflakes.api import checkPath
+
     reporter = Reporter()
     checkPath(path, reporter)
     return reporter.names
